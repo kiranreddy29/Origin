@@ -3,10 +3,11 @@
 Personal portfolio website built using React.
 
 ## Tech Stack
--React
--Tailwind
--Node + Express
--MongoDB
+- React
+- Tailwind
+- Node + Express
+- MongoDB
+
 
 ## Features
 - Responsive design
