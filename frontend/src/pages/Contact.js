@@ -5,10 +5,29 @@ function Contact() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log({ name, email, message });
-  }
+  
+    const response = await fetch("http://localhost:5001/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        message,
+      }),
+    });
+  
+    const data = await response.json();
+    console.log(data);
+  
+    // optional: clear form
+    setName("");
+    setEmail("");
+    setMessage("");
+  }  
 
   return (
     <div>

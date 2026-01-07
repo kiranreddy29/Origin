@@ -1,8 +1,14 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const connectDB = require("./config/db");
+const Contact = require("./models/Contact");
+
+
 const app = express();
 
-// middleware
+connectDB();
+
 app.use(express.json());
 app.use(cors());
 
@@ -13,11 +19,14 @@ app.get("/api/health", (req, res) => {
 });
 
 // contact route
-app.post("/api/contact", (req, res) => {
-  const { name, email, message } = req.body;
-  console.log("Contact received:", { name, email, message });
-  res.status(200).json({ success: true });
-});
+app.post("/api/contact", async (req, res) => {
+    try {
+      const contact = await Contact.create(req.body);
+      res.status(201).json({ success: true, contact });
+    } catch (error) {
+      res.status(500).json({ success: false });
+    }
+  });  
 
 const PORT = 5001;
 app.listen(PORT, () => {
