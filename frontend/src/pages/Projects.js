@@ -15,7 +15,7 @@ function Projects() {
   ];
 
   return (
-    <div>
+    <div className="container">
       <h1>Projects</h1>
       {projects.map((project, index) => (
         <ProjectCard

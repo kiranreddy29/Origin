@@ -5,33 +5,49 @@ function Contact() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
   async function handleSubmit(e) {
     e.preventDefault();
   
-    const response = await fetch("http://localhost:5001/api/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        message,
-      }),
-    });
+    setLoading(true);
+    setSuccess("");
+    setError("");
   
-    const data = await response.json();
-    console.log(data);
+    try {
+      const response = await fetch("http://localhost:5001/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, message }),
+      });
   
-    // optional: clear form
-    setName("");
-    setEmail("");
-    setMessage("");
-  }  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error("Something went wrong");
+      }
+  
+      setSuccess("Message sent successfully!");
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch (err) {
+      setError("Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+    
 
   return (
-    <div>
+    <div className="container">
       <h1>Contact</h1>
+      {success && <p className="success">{success}</p>}
+      {error && <p className="error">{error}</p>}
 
       <form onSubmit={handleSubmit}>
         <input
@@ -54,7 +70,9 @@ function Contact() {
           onChange={(e) => setMessage(e.target.value)}
         />
 
-        <button type="submit">Send</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Sending..." : "Send"}
+        </button>
       </form>
     </div>
   );

@@ -4,9 +4,9 @@ function Skills() {
   const skills = ["Java", "JavaScript", "React", "Node.js", "MongoDB"];
 
   return (
-    <div>
+    <div className="container">
       <h1>Skills</h1>
-      <ul>
+      <ul className="skills-list">
         {skills.map((skill, index) => (
           <SkillItem key={index} name={skill} />
         ))}
